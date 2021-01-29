@@ -10,3 +10,4 @@ index.js.map
 src/*.js.map
 test/test.spec.js.map
 test/test.spec.js
+index.js

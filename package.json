@@ -5,7 +5,8 @@
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
-    "clean": "rimraf src/*.js test/*.spec.js index.js",
+    "build": "tsc -p .",
+    "clean": "rimraf src/*.js src/*.js.map test/*.spec.js test/*.spec.js.map index.js",
     "test": "jest --coverage"
   },
   "repository": {
