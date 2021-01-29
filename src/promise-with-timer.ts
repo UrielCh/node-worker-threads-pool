@@ -13,7 +13,7 @@ export function isTimeoutError(err: Error): boolean {
 }
 
 export class PromiseWithTimer {
-  private timerID: NodeJS.Timeout | null = null;
+  private timerID: NodeJS.Timeout | undefined;
   private timeoutSymbol = Symbol("timeoutSymbol");
 
   constructor(private p: Promise<any>, private timeout: number) {}
@@ -34,8 +34,7 @@ export class PromiseWithTimer {
     if (result === this.timeoutSymbol) {
       throw new TimeoutError("timeout");
     }
-
-    clearTimeout(this.timerID);
+    if (this.timerID) clearTimeout(this.timerID);
     return result;
   }
 }

@@ -4,7 +4,7 @@ import { StaticTaskExecutor } from "./task-executor";
 import { createCode } from "./create-code";
 import { CommonWorkerSettings } from "./common";
 
-type TaskFuncThis<WorkerData = any> = {
+export type TaskFuncThis<WorkerData = any> = {
   workerData: WorkerData;
   require: NodeRequire;
 };

@@ -123,7 +123,7 @@ export class Pool extends EventEmitter {
     this._deprecated = true;
     this.removeAllListeners();
     const workers = this._workers;
-    this._workers = null;
+    this._workers = [];
     await Promise.all(workers.map((worker) => worker.terminate()));
   }
 }

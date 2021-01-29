@@ -7,6 +7,7 @@ export interface TaskConfig {
 
 import { Worker, WorkerOptions } from "worker_threads";
 import { PromiseWithTimer } from "./promise-with-timer";
+import { URL } from "url";
 
 export class PoolWorker extends Worker {
   public ready = false;
@@ -25,7 +26,7 @@ export class PoolWorker extends Worker {
     const taskPromise = new Promise((resolve, reject) => {
       const self = this;
 
-      function message(res) {
+      function message(res: any) {
         self.removeListener("error", error);
         self.readyToWork();
         resolve(res);

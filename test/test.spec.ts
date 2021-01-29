@@ -1,10 +1,11 @@
-const { Pool } = require("../src/pool");
-const { DynamicPool, StaticPool, isTimeoutError } = require("..");
-const os = require("os");
-const path = require("path");
+import { Pool } from "../src/pool";
+import { DynamicPool, StaticPool, isTimeoutError } from "..";
+import os from "os";
+import path from "path";
+import { TaskFuncThis } from "../src/static-pool";
 const numCPU = os.cpus().length;
 
-function wait(t) {
+function wait(t: number) {
   return new Promise((resolve) => {
     setTimeout(resolve, t);
   });
@@ -74,7 +75,7 @@ describe("static pool tests", () => {
     const pool = new StaticPool({
       size: numCPU,
       workerData: 10,
-      task: function (n) {
+      task: function (n: number) {
         return this.workerData * n;
       },
     });
@@ -147,7 +148,7 @@ describe("static pool tests", () => {
   });
 
   test("test 'this' reference under strict mode", async () => {
-    function task() {
+    function task(this: TaskFuncThis<number>) {
       "use strict";
       return this.workerData;
     }
@@ -164,19 +165,19 @@ describe("static pool tests", () => {
   });
 });
 
-function add20() {
+function add20(this: TaskFuncThis<number>) {
   return this.workerData + 20;
 }
 
-function sub10() {
+function sub10(this: TaskFuncThis<number>) {
   return this.workerData - 10;
 }
 
-function mult10() {
+function mult10(this: TaskFuncThis<number>) {
   return this.workerData * 10;
 }
 
-function div10() {
+function div10(this: TaskFuncThis<number>) {
   return this.workerData / 10;
 }
 
@@ -246,7 +247,7 @@ describe("dynamic pool tests", () => {
   });
 
   test("test 'this' reference under strict mode", async () => {
-    function task() {
+    function task(this: TaskFuncThis<number>) {
       "use strict";
       return this.workerData;
     }
@@ -291,7 +292,7 @@ describe("dynamic pool tests", () => {
 describe("error tests", () => {
   test("error static pool test", async () => {
     const pool = new StaticPool({
-      task: (n) => {
+      task: (n: number) => {
         if (n < 0) {
           throw new Error("err");
         }
@@ -322,7 +323,7 @@ describe("error tests", () => {
     for (let i = 0; i < numCPU; i++) {
       try {
         await pool.exec({
-          task() {
+          task(DynamicPool) {
             if (this.workerData < 0) {
               throw new Error("err");
             }
@@ -338,7 +339,7 @@ describe("error tests", () => {
     for (let i = 0; i < numCPU; i++) {
       try {
         const res = await pool.exec({
-          task() {
+          task(this: TaskFuncThis<number>) {
             if (this.workerData < 0) {
               throw new Error("err");
             }
@@ -357,7 +358,7 @@ describe("error tests", () => {
 });
 
 describe("timeout tests", () => {
-  let pool;
+  let pool: StaticPool<any, number> | DynamicPool;
   afterEach(() => pool.destroy());
 
   test("test static pool with timeout", async () => {
@@ -483,12 +484,12 @@ describe("SHARE_ENV tests", () => {
 describe("resourceLimits tests", () => {
   const STACK_SIZE_MB = 16;
 
-  function shouldSetResourceLimits(pool) {
+  function shouldSetResourceLimits(pool: any) {
     return new Promise((resolve, reject) => {
-      pool.once("worker-ready", (worker) => {
+      pool.once("worker-ready", (worker: any) => {
         const stackSizeMb = worker.resourceLimits.stackSizeMb;
         if (stackSizeMb === STACK_SIZE_MB) {
-          resolve();
+          resolve(undefined);
         } else {
           reject(`stackSizeMb is ${stackSizeMb}`);
         }
@@ -660,7 +661,7 @@ describe("require function tests", () => {
     const pool = new DynamicPool(2);
 
     const cpus = await pool
-      .createExecutor(function () {
+      .createExecutor(function (this: { require: (id: string) => any }) {
         const os = this.require("os");
         return os.cpus().length;
       })
