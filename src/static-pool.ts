@@ -3,6 +3,7 @@ import { PoolWorker } from "./pool-worker";
 import { StaticTaskExecutor } from "./task-executor";
 import { createCode } from "./create-code";
 import { CommonWorkerSettings } from "./common";
+import { WorkerOptions } from "worker_threads";
 
 export type TaskFuncThis<WorkerData = any> = {
   workerData: WorkerData;
@@ -55,7 +56,7 @@ export class StaticPool<ParamType, ResultType, WorkerData = any> extends Pool {
   ) {
     super(opt.size);
     const { task, workerData, shareEnv, resourceLimits } = opt;
-    const workerOpt = { workerData } as any;
+    const workerOpt: WorkerOptions = { workerData };
     /* istanbul ignore next */
     if (shareEnv) {
       const { SHARE_ENV } = require("worker_threads");
