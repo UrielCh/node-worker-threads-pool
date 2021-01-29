@@ -1,33 +1,22 @@
-/**
- * @typedef {import("../index").TransferList} TransferList
- */
+import { TransferList } from "./pool";
 
-/**
- * @typedef {object} TaskConfig
- * @property {number} [timeout]
- * @property {TransferList} [transferList]
- */
+export interface TaskConfig {
+  timeout?: number;
+  transferList?: TransferList;
+}
 
-const { Worker } = require("worker_threads");
-const { PromiseWithTimer } = require("./promise-with-timer");
+import { Worker, WorkerOptions } from "worker_threads";
+import { PromiseWithTimer } from "./promise-with-timer";
 
-class PoolWorker extends Worker {
-  /**
-   * @param {ConstructorParameters<typeof Worker>} args
-   */
-  constructor(...args) {
-    super(...args);
+export class PoolWorker extends Worker {
+  public ready = false;
 
-    this.ready = false;
-
+  constructor(filename: string | URL, options?: WorkerOptions) {
+    super(filename, options);
     this.once("online", () => this.readyToWork());
   }
 
-  /**
-   * @param {any} param
-   * @param {TaskConfig} taskConfig
-   */
-  run(param, taskConfig) {
+  run(param: any, taskConfig: TaskConfig) {
     this.ready = false;
 
     const timeout = taskConfig.timeout ? taskConfig.timeout : 0;
@@ -42,7 +31,7 @@ class PoolWorker extends Worker {
         resolve(res);
       }
 
-      function error(err) {
+      function error(err: Error) {
         self.removeListener("message", message);
         reject(err);
       }
@@ -73,5 +62,3 @@ class PoolWorker extends Worker {
     return super.terminate();
   }
 }
-
-module.exports.PoolWorker = PoolWorker;

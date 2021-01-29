@@ -1,18 +1,19 @@
-/**
- * @typedef {import("./pool-worker").PoolWorker} PoolWorker
- * @typedef {import("../index").TransferList} TransferList
- * @typedef {import("./pool-worker").TaskConfig} TaskConfig
- */
+import { EventEmitter } from "events";
+import { TaskContainer } from "./task-container";
+import { isTimeoutError } from "./promise-with-timer";
+import { PoolWorker, TaskConfig } from "./pool-worker";
+import { TransferListItem } from "worker_threads";
 
-const { EventEmitter } = require("events");
-const { TaskContainer } = require("./task-container");
-const { isTimeoutError } = require("./promise-with-timer");
+export type TransferList = ReadonlyArray<TransferListItem>;
 
-class Pool extends EventEmitter {
-  /**
-   * @param {number} size
-   */
-  constructor(size) {
+export class Pool extends EventEmitter {
+  private _size: number;
+  private _deprecated = false;
+  private _workers: PoolWorker[] = [];
+  private _createWorker: any = null;
+  private _taskQueue: TaskContainer[] = [];
+
+  constructor(size: number) {
     super();
 
     if (typeof size !== "number") {
@@ -27,46 +28,18 @@ class Pool extends EventEmitter {
       throw new RangeError('"size" must not be lower than 1!');
     }
 
-    /** @private */
     this._size = size;
-
-    /** @private */
-    this._deprecated = false;
-
-    /**
-     * @private
-     * @type {PoolWorker[]}
-     */
-    this._workers = [];
-
-    /**
-     * @private
-     */
-    this._createWorker = null;
-
-    /**
-     * @private
-     * @type {TaskContainer[]}
-     */
-    this._taskQueue = [];
 
     this._addEventHandlers();
   }
 
-  /**
-   * @private
-   */
-  _addEventHandlers() {
+  private _addEventHandlers() {
     this.on("worker-ready", (worker) => {
       this._processTask(worker);
     });
   }
 
-  /**
-   * @private
-   * @param {PoolWorker} worker
-   */
-  _addWorkerLifecycleHandlers(worker) {
+  private _addWorkerLifecycleHandlers(worker: PoolWorker) {
     worker.on("ready", (worker) => this.emit("worker-ready", worker));
 
     worker.once("exit", (code) => {
@@ -77,11 +50,7 @@ class Pool extends EventEmitter {
     });
   }
 
-  /**
-   * @private
-   * @param {() => PoolWorker} getWorker
-   */
-  _setWorkerCreator(getWorker) {
+  private _setWorkerCreator(getWorker: () => PoolWorker) {
     this._createWorker = () => {
       const worker = getWorker();
       this._addWorkerLifecycleHandlers(worker);
@@ -89,29 +58,18 @@ class Pool extends EventEmitter {
     };
   }
 
-  /**
-   * @param {PoolWorker} worker
-   * @private
-   */
-  _replaceWorker(worker) {
+  private _replaceWorker(worker: PoolWorker) {
     const i = this._workers.indexOf(worker);
     this._workers[i] = this._createWorker();
   }
 
-  /**
-   * @returns {PoolWorker | null}
-   */
-  _getIdleWorker() {
+  _getIdleWorker(): PoolWorker | null {
     const worker = this._workers.find((worker) => worker.ready);
 
     return worker ? worker : null;
   }
 
-  /**
-   * @param {PoolWorker} worker
-   * @private
-   */
-  _processTask(worker) {
+  private _processTask(worker: PoolWorker) {
     const task = this._taskQueue.shift();
 
     if (!task) {
@@ -131,10 +89,7 @@ class Pool extends EventEmitter {
       });
   }
 
-  /**
-   * @param {() => PoolWorker} getWorker
-   */
-  fill(getWorker) {
+  fill(getWorker: () => PoolWorker) {
     this._setWorkerCreator(getWorker);
 
     const size = this._size;
@@ -144,11 +99,7 @@ class Pool extends EventEmitter {
     }
   }
 
-  /**
-   * @param {any} param
-   * @param {TaskConfig} taskConfig
-   */
-  runTask(param, taskConfig) {
+  runTask(param: any, taskConfig: TaskConfig): Promise<any> {
     if (this._deprecated) {
       throw new Error("This pool is deprecated! Please use a new one.");
     }
@@ -165,7 +116,10 @@ class Pool extends EventEmitter {
     });
   }
 
-  async destroy() {
+  /**
+   * Destroy this pool and terminate all threads.
+   */
+  async destroy(): Promise<void> {
     this._deprecated = true;
     this.removeAllListeners();
     const workers = this._workers;
@@ -173,5 +127,3 @@ class Pool extends EventEmitter {
     await Promise.all(workers.map((worker) => worker.terminate()));
   }
 }
-
-module.exports.Pool = Pool;

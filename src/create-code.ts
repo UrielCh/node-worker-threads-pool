@@ -1,8 +1,6 @@
 const es6FuncReg = /^task[^]*([^]*)[^]*{[^]*}$/;
-/**
- * @param {Function} fn
- */
-function createCode(fn) {
+
+export function createCode(fn: Function): string {
   const strFn = Function.prototype.toString.call(fn);
   let expression = "";
   if (es6FuncReg.test(strFn)) {
@@ -14,5 +12,3 @@ function createCode(fn) {
   }
   return `(${expression})`;
 }
-
-module.exports.createCode = createCode;
