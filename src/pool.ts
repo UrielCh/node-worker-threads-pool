@@ -63,7 +63,7 @@ export class Pool extends EventEmitter {
     this._workers[i] = this._createWorker();
   }
 
-  _getIdleWorker(): PoolWorker | null {
+  private _getIdleWorker(): PoolWorker | null {
     const worker = this._workers.find((worker) => worker.ready);
 
     return worker ? worker : null;

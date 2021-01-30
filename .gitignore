@@ -5,9 +5,8 @@ node_modules/
 package-lock.json
 coverage/
 src/*.js
-test/*.js
 index.js.map
 src/*.js.map
-test/test.spec.js.map
-test/test.spec.js
+test/*.spec.js.map
+test/*.spec.js
 index.js
