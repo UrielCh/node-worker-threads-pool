@@ -1,11 +1,3 @@
-/**
- * @typedef {import("./pool").Pool} Pool
- * @typedef {import("./dynamic-pool").DynamicPool} DynamicPool
- * @typedef {import("./dynamic-pool").DynamicPoolWorkerParam} DynamicPoolWorkerParam
- * @typedef {import("./pool-worker").TaskConfig} TaskConfig
- * @typedef {import("../index").TransferList} TransferList
- */
-
 import { DynamicPool, DynamicPoolWorkerParam } from "./dynamic-pool";
 
 import { createCode } from "./create-code";
@@ -62,7 +54,7 @@ export class DynamicTaskExecutor<
     this._code = createCode(task);
   }
 
-  async exec(param?: DynamicPoolWorkerParam): Promise<ResultType> {
+  async exec(param?: ParamType): Promise<ResultType> {
     const workerParam: DynamicPoolWorkerParam = { code: this._code, param };
     return await super.exec(workerParam);
   }
