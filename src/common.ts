@@ -14,4 +14,8 @@ export interface CommonWorkerSettings {
     codeRangeSizeMb?: number;
     stackSizeMb?: number;
   };
+  /**
+   * if provided, call on each message emited by the workrs, if it return true, the task is consider as done; else wait for more messages
+   */
+  isDone?: (message: any) => boolean;
 }

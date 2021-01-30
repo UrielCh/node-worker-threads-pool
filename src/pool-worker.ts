@@ -12,7 +12,11 @@ import { URL } from "url";
 export class PoolWorker extends Worker {
   public ready = false;
 
-  constructor(filename: string | URL, options?: WorkerOptions) {
+  constructor(
+    filename: string | URL,
+    options?: WorkerOptions,
+    private isDone?: (message: any) => boolean
+  ) {
     super(filename, options);
     this.once("online", () => this.readyToWork());
   }
@@ -22,11 +26,18 @@ export class PoolWorker extends Worker {
 
     const timeout = taskConfig.timeout ? taskConfig.timeout : 0;
     const transferList = taskConfig.transferList;
-
+    const { isDone } = this;
     const taskPromise = new Promise((resolve, reject) => {
       const self = this;
 
       function message(res: any) {
+        if (isDone) {
+          if (isDone(res)) {
+            self.removeListener("message", message);
+          } else {
+            return;
+          }
+        }
         self.removeListener("error", error);
         self.readyToWork();
         resolve(res);
@@ -37,7 +48,8 @@ export class PoolWorker extends Worker {
         reject(err);
       }
 
-      this.once("message", message);
+      if (!this.isDone) this.once("message", message);
+      else this.on("message", message);
       this.once("error", error);
       this.postMessage(param, transferList);
     });

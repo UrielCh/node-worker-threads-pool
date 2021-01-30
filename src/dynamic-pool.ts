@@ -13,6 +13,7 @@ import { DynamicTaskExecutor } from "./task-executor";
 import { createCode } from "./create-code";
 import { TaskFunc } from "./static-pool";
 import { CommonWorkerSettings } from "./common";
+import { SHARE_ENV } from "worker_threads";
 
 const script = `
   const vm = require('vm');
@@ -54,23 +55,20 @@ export class DynamicPool extends Pool {
    * @param opt Some advanced settings.
    *
    */
-  constructor(size: number, opt?: CommonWorkerSettings) {
+  constructor(size: number, opt: CommonWorkerSettings = {}) {
     super(size);
     const workerOpt = {
       eval: true,
     } as any;
-    if (opt) {
-      /* istanbul ignore next */
-      if (opt.shareEnv) {
-        const { SHARE_ENV } = require("worker_threads");
-        workerOpt.env = SHARE_ENV;
-      }
-      /* istanbul ignore next */
-      if (typeof opt.resourceLimits === "object") {
-        workerOpt.resourceLimits = opt.resourceLimits;
-      }
+    /* istanbul ignore next */
+    if (opt.shareEnv) {
+      workerOpt.env = SHARE_ENV;
     }
-    this.fill(() => new PoolWorker(script, workerOpt));
+    /* istanbul ignore next */
+    if (typeof opt.resourceLimits === "object") {
+      workerOpt.resourceLimits = opt.resourceLimits;
+    }
+    this.fill(() => new PoolWorker(script, workerOpt, opt.isDone));
   }
   /**
    * Choose a idle worker to execute the function

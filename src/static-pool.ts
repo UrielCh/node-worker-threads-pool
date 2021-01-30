@@ -3,7 +3,7 @@ import { PoolWorker } from "./pool-worker";
 import { StaticTaskExecutor } from "./task-executor";
 import { createCode } from "./create-code";
 import { CommonWorkerSettings } from "./common";
-import { WorkerOptions } from "worker_threads";
+import { SHARE_ENV, WorkerOptions } from "worker_threads";
 
 export type TaskFuncThis<WorkerData = any> = {
   workerData: WorkerData;
@@ -37,7 +37,8 @@ function createScript(fn: Function) {
   `;
 }
 
-export interface StaticPoolOptions<ParamType, ResultType, WorkerData> {
+export interface StaticPoolOptions<ParamType, ResultType, WorkerData>
+  extends CommonWorkerSettings {
   /** number of workers */
   size: number;
   /** path of worker file or a worker function */
@@ -50,16 +51,12 @@ export interface StaticPoolOptions<ParamType, ResultType, WorkerData> {
  * Threads pool with static task.
  */
 export class StaticPool<ParamType, ResultType, WorkerData = any> extends Pool {
-  constructor(
-    opt: StaticPoolOptions<ParamType, ResultType, WorkerData> &
-      CommonWorkerSettings
-  ) {
+  constructor(opt: StaticPoolOptions<ParamType, ResultType, WorkerData>) {
     super(opt.size);
-    const { task, workerData, shareEnv, resourceLimits } = opt;
+    const { task, workerData, shareEnv, resourceLimits, isDone } = opt;
     const workerOpt: WorkerOptions = { workerData };
     /* istanbul ignore next */
     if (shareEnv) {
-      const { SHARE_ENV } = require("worker_threads");
       workerOpt.env = SHARE_ENV;
     }
     /* istanbul ignore next */
@@ -72,13 +69,13 @@ export class StaticPool<ParamType, ResultType, WorkerData = any> extends Pool {
 
     switch (typeof task) {
       case "string": {
-        this.fill(() => new PoolWorker(task, workerOpt));
+        this.fill(() => new PoolWorker(task, workerOpt, isDone));
         break;
       }
 
       case "function": {
         const script = createScript(task);
-        this.fill(() => new PoolWorker(script, workerOpt));
+        this.fill(() => new PoolWorker(script, workerOpt, isDone));
         break;
       }
 
