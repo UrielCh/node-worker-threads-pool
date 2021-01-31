@@ -2,7 +2,7 @@ import { StaticPool } from "..";
 import path from "path";
 
 describe("progress function in static pool tests", () => {
-  test("test worker file", async () => {
+  test("test worker file with progess event", async () => {
     const workerData = 100;
     let progressCount = 0;
     const pool = new StaticPool({

@@ -53,7 +53,8 @@ export interface StaticPoolOptions<ParamType, ResultType, WorkerData>
 export class StaticPool<ParamType, ResultType, WorkerData = any> extends Pool {
   constructor(opt: StaticPoolOptions<ParamType, ResultType, WorkerData>) {
     super(opt.size);
-    const { task, workerData, shareEnv, resourceLimits, isDone } = opt;
+    const { workerData, shareEnv, resourceLimits, isDone } = opt;
+    let task = opt.task;
     const workerOpt: WorkerOptions = { workerData };
     /* istanbul ignore next */
     if (shareEnv) {
@@ -69,7 +70,11 @@ export class StaticPool<ParamType, ResultType, WorkerData = any> extends Pool {
 
     switch (typeof task) {
       case "string": {
-        this.fill(() => new PoolWorker(task, workerOpt, isDone));
+        if (task.endsWith(".ts")) {
+          workerOpt.argv = [task];
+          task = __dirname + "/register.js";
+        }
+        this.fill(() => new PoolWorker(task as string, workerOpt, isDone));
         break;
       }
 

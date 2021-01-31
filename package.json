@@ -26,6 +26,13 @@
     "typescript"
   ],
   "author": "mokuo",
+  "contributors": [
+    {
+      "name": "uriel chemouni",
+      "email": "uchemouni@gmail.com",
+      "url": "https://urielch.github.io/urielch/"
+    }
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/SUCHMOKUO/node-worker-threads-pool/issues"
@@ -40,6 +47,10 @@
     "pretty-quick": "^2.0.1",
     "rimraf": "^3.0.2",
     "ts-jest": "^26.5.0",
+    "typescript": "^4.1.3"
+  },
+  "optionalDependencies": {
+    "ts-node": "^9.1.1",
     "typescript": "^4.1.3"
   }
 }
