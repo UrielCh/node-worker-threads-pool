@@ -7,7 +7,8 @@
   "scripts": {
     "build": "tsc -p .",
     "clean": "rimraf src/*.js src/*.js.map test/*.spec.js test/*.spec.js.map index.js",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "prepare": "npm run build"
   },
   "repository": {
     "type": "git",
