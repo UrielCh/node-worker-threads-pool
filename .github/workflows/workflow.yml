@@ -1,5 +1,4 @@
 name: Workflow
-description: test and publish npm package to npmjs.com
 
 on:
   push:
