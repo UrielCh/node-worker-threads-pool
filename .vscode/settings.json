@@ -7,6 +7,9 @@
     "test/addTs.js": true,
     "src/*.d.ts": true,
     "src/*.js": true,
-    "src/*.map": true
+    "src/*.map": true,
+    "index.js": true,
+    "index.js.map": true,
+    "index.d.ts": true
   }
 }

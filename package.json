@@ -1,5 +1,5 @@
 {
-  "name": "node-worker-threads-pool2",
+  "name": "node-worker-threads-pool-ts",
   "version": "1.5.0",
   "description": "Simple worker threads pool using Node's worker_threads module. Compatible with ES6+ Promise, Async/Await.",
   "main": "index.js",
