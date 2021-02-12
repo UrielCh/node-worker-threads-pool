@@ -34,8 +34,7 @@ jobs:
         with:
           node-version: 14
           registry-url: https://registry.npmjs.org
-
-      - uses: JS-DevTools/npm-publish@v1
-        with:
-          token: ${{ secrets.NPM_TOKEN }}
-          check-version: true
+      - name: publish
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
