@@ -1,4 +1,4 @@
-import { StaticPool } from "..";
+import { StaticPool } from "../src";
 import path from "path";
 
 describe("progress function in static pool tests", () => {

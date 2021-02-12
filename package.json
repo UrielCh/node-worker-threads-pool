@@ -2,8 +2,8 @@
   "name": "node-worker-threads-pool-ts",
   "version": "1.5.0",
   "description": "Simple worker threads pool using Node's worker_threads module. Compatible with ES6+ Promise, Typescript, Async/Await.",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "src/index.js",
+  "types": "src/index.d.ts",
   "scripts": {
     "build": "tsc -p .",
     "clean": "rimraf src/*.js src/*.js.map test/*.spec.js test/*.spec.js.map index.js",

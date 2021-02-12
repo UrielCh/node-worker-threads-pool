@@ -1,4 +1,4 @@
-const { parentPort, workerData } = require("worker_threads");
+import { parentPort, workerData } from "worker_threads";
 
 function add(a: number, b: number) {
   return a + b;

@@ -1,5 +1,5 @@
 import { Pool } from "../src/pool";
-import { DynamicPool, StaticPool, isTimeoutError } from "..";
+import { DynamicPool, StaticPool, isTimeoutError } from "../src";
 import os from "os";
 import path from "path";
 import { TaskFuncThis } from "../src/static-pool";

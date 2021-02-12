@@ -1,4 +1,4 @@
-const { DynamicPool, StaticPool } = require("..");
+const { DynamicPool, StaticPool } = require("../src");
 const assert = require("assert");
 
 function expect(val) {
