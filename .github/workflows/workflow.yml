@@ -18,6 +18,7 @@ jobs:
       - name: Test
         run: |
           npm install
+          npm build
           npm test
 
       - name: Coveralls
