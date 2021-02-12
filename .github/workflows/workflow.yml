@@ -1,4 +1,5 @@
 name: Workflow
+description: test and publish npm package to npmjs.com
 
 on:
   push:
@@ -10,10 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-
-      - uses: actions/setup-node@v2-beta
+      - uses: actions/setup-node@v2
         with:
-          node-version: "14"
+          node-version: 14
 
       - name: Test
         run: |
@@ -31,10 +31,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-
-      - uses: actions/setup-node@v2-beta
+      - uses: actions/setup-node@v2
         with:
-          node-version: "14"
+          node-version: 14
+          registry-url: https://registry.npmjs.org
 
       - uses: JS-DevTools/npm-publish@v1
         with:
