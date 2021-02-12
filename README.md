@@ -1,4 +1,6 @@
-# node-worker-threads-pool
+# node-worker-threads-pool-ts
+
+node-worker-threads-pool-ts is a fork of node-worker-threads-pool writen in Typescript, and supporting typescript task.
 
 [![Actions Status](https://github.com/SUCHMOKUO/node-worker-threads-pool/workflows/Workflow/badge.svg)](https://github.com/SUCHMOKUO/node-worker-threads-pool/actions)
 [![Coverage Status](https://coveralls.io/repos/github/SUCHMOKUO/node-worker-threads-pool/badge.svg?branch=master)](https://coveralls.io/github/SUCHMOKUO/node-worker-threads-pool?branch=master)
