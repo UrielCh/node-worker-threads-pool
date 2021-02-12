@@ -2,16 +2,16 @@
 
 node-worker-threads-pool-ts is a fork of node-worker-threads-pool writen in Typescript, and supporting typescript task.
 
-[![Actions Status](https://github.com/SUCHMOKUO/node-worker-threads-pool/workflows/Workflow/badge.svg)](https://github.com/SUCHMOKUO/node-worker-threads-pool/actions)
-[![Coverage Status](https://coveralls.io/repos/github/SUCHMOKUO/node-worker-threads-pool/badge.svg?branch=master)](https://coveralls.io/github/SUCHMOKUO/node-worker-threads-pool?branch=master)
-[![](https://img.shields.io/npm/v/node-worker-threads-pool.svg)](https://www.npmjs.com/package/node-worker-threads-pool)
+[![Actions Status](https://github.com/SUCHMOKUO/node-worker-threads-pool/workflows/Workflow/badge.svg)](https://github.com/UrielCh/node-worker-threads-pool-ts/actions)
+[![Coverage Status](https://coveralls.io/repos/github/SUCHMOKUO/node-worker-threads-pool/badge.svg?branch=master)](https://coveralls.io/github/UrielCh/node-worker-threads-pool-ts?branch=master)
+[![](https://img.shields.io/npm/v/node-worker-threads-pool-ts.svg)](https://www.npmjs.com/package/node-worker-threads-pool-ts)
 ![](https://img.shields.io/badge/dependencies-none-brightgreen.svg)
-![](https://img.shields.io/npm/dt/node-worker-threads-pool.svg)
-![](https://img.shields.io/npm/l/node-worker-threads-pool.svg)
+![](https://img.shields.io/npm/dt/node-worker-threads-pool-ts.svg)
+![](https://img.shields.io/npm/l/node-worker-threads-pool-ts.svg)
 
 Simple worker threads pool using Node's worker_threads module. Compatible with ES6+ Promise, Async/Await and TypeScript🚀.
 
-## With this library, you can:
+## With this library, you can
 
 - Use `StaticPool` to create a threads pool with a task from worker file or from task function provided to make use of multi-core processor.
 - Use `DynamicPool` to create a threads pool with different tasks provided each call. Thus you can get more flexibility than `StaticPool` and make use of multi-core processor.
@@ -23,7 +23,7 @@ Simple worker threads pool using Node's worker_threads module. Compatible with E
 
 ## Installation
 
-```
+```bash
 npm install node-worker-threads-pool --save
 ```
 
@@ -31,8 +31,8 @@ npm install node-worker-threads-pool --save
 
 Quickly create a pool with static task:
 
-```js
-const { StaticPool } = require("node-worker-threads-pool");
+```typescript
+import { StaticPool } from "node-worker-threads-pool-ts";
 
 const staticPool = new StaticPool({
   size: 4,
@@ -49,7 +49,7 @@ There you go! 🎉
 Create a pool with dynamic task:
 
 ```js
-const { DynamicPool } = require("node-worker-threads-pool");
+import { DynamicPool } from "node-worker-threads-pool-ts";
 
 const dynamicPool = new DynamicPool(4);
 
@@ -91,11 +91,11 @@ Instance of StaticPool is a threads pool with static task provided.
 
 ### Example with worker file
 
-### In the worker.js :
+### In the worker.ts
 
-```js
+```typescript
 // Access the workerData by requiring it.
-const { parentPort, workerData } = require("worker_threads");
+import { parentPort, workerData } from "worker_threads";
 
 // Something you shouldn"t run in main thread
 // since it will block.
@@ -122,10 +122,10 @@ parentPort.on("message", (param) => {
 });
 ```
 
-### In the main.js :
+### In the main.ts
 
-```js
-const { StaticPool } = require("node-worker-threads-pool");
+```typescript
+import { StaticPool } from "node-worker-threads-pool";
 
 const filePath = "absolute/path/to/your/worker/script";
 
@@ -153,7 +153,7 @@ for (let i = 0; i < 20; i++) {
 
 You can access workerData in task function using `this` keyword:
 
-```js
+```typescript
 const pool = new StaticPool({
   size: 4,
   workerData: "workerData!",
@@ -189,7 +189,7 @@ Executor for StaticPool. Used to apply some advanced settings to a task.
 
 ### Example
 
-```js
+```typescript
 const staticPool = new StaticPool({
   size: 4,
   task: (buf) => {
@@ -267,7 +267,7 @@ Executor for DynamicPool. Used to apply some advanced settings to a task.
 
 ### Example
 
-```js
+```typescript
 const dynamicPool = new DynamicPool(4);
 
 const buf = Buffer.alloc(1024 * 1024);
@@ -314,8 +314,8 @@ Detect if a thrown error is `TimeoutError`.
 
 ## Example
 
-```js
-const { isTimeoutError } = require("node-worker-threads-pool");
+```typescript
+import { isTimeoutError } from "node-worker-threads-pool";
 
 // create pool.
 ...
@@ -354,7 +354,7 @@ try {
 
 If you are using webpack in your project and want to import third-party libraries in task function, please use `this.require`:
 
-```js
+```typescript
 const staticPool = new StaticPool({
   size: 4,
   task() {
@@ -364,7 +364,7 @@ const staticPool = new StaticPool({
 });
 ```
 
-```js
+```typescript
 const dynamicPool = new DynamicPool(4);
 
 dynamicPool
