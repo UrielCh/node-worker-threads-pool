@@ -3,7 +3,7 @@
 [node-worker-threads-pool-ts](https://www.npmjs.com/package/node-worker-threads-pool-ts) is a fork of [node-worker-threads-pool](https://www.npmjs.com/package/node-worker-threads-pool) writen in Typescript, and support Typescript task for worker.
 Obviously optional [typescript](https://www.npmjs.com/package/typescript) and [ts-node](https://www.npmjs.com/package/ts-node) must be install to enable Typescript support.
 
-[![Actions Status](https://github.com/UrielCh/node-worker-threads-pool-ts/workflows/Workflow/badge.svg)](https://github.com/UrielCh/node-worker-threads-pool-ts/actions)
+[![Actions Status](https://github.com/UrielCh/node-worker-threads-pool-ts/workflows/coveralls-on-push/badge.svg)](https://github.com/UrielCh/node-worker-threads-pool-ts/actions)
 [![Coverage Status](https://coveralls.io/repos/github/UrielCh/node-worker-threads-pool-ts/badge.svg?branch=master)](https://coveralls.io/github/UrielCh/node-worker-threads-pool-ts?branch=master)
 [![Package Version](https://img.shields.io/npm/v/node-worker-threads-pool-ts.svg)](https://www.npmjs.com/package/node-worker-threads-pool-ts)
 ![dependences](https://img.shields.io/badge/dependencies-none-brightgreen.svg)
