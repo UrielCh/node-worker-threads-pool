@@ -1,4 +1,4 @@
-name: on-release
+name: publish-on-release
 on:
   release:
     types: [published]

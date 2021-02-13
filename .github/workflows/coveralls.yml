@@ -1,4 +1,4 @@
-name: Workflow
+name: coveralls-on-push
 on:
   push:
     branches:
