@@ -2,9 +2,9 @@
 
 node-worker-threads-pool-ts is a fork of node-worker-threads-pool writen in Typescript, and supporting typescript task.
 
-[![Actions Status](https://github.com/SUCHMOKUO/node-worker-threads-pool/workflows/Workflow/badge.svg)](https://github.com/UrielCh/node-worker-threads-pool-ts/actions)
-[![Coverage Status](https://coveralls.io/repos/github/SUCHMOKUO/node-worker-threads-pool/badge.svg?branch=master)](https://coveralls.io/github/UrielCh/node-worker-threads-pool-ts?branch=master)
-[![](https://img.shields.io/npm/v/node-worker-threads-pool-ts.svg)](https://www.npmjs.com/package/node-worker-threads-pool-ts)
+[![Actions Status](https://github.com/UrielCh/node-worker-threads-pool-ts/workflows/Workflow/badge.svg)](https://github.com/UrielCh/node-worker-threads-pool-ts/actions)
+[![Coverage Status](https://coveralls.io/repos/github/UrielCh/node-worker-threads-pool-ts/badge.svg?branch=master)](https://coveralls.io/github/UrielCh/node-worker-threads-pool-ts?branch=master)
+[![Package Version](https://img.shields.io/npm/v/node-worker-threads-pool-ts.svg)](https://www.npmjs.com/package/node-worker-threads-pool-ts)
 ![](https://img.shields.io/badge/dependencies-none-brightgreen.svg)
 ![](https://img.shields.io/npm/dt/node-worker-threads-pool-ts.svg)
 ![](https://img.shields.io/npm/l/node-worker-threads-pool-ts.svg)
